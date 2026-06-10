@@ -25,4 +25,12 @@ if %errorlevel% neq 0 (
 :: Check Windows Long Paths support
 call "%~dp0tools\check_longpaths.bat"
 
+:: Pin the MSVC toolset used for compilation to v143 (14.44.35207). The host VS2026
+:: install defaults to the v145 toolset (14.50/14.51), whose STL headers cannot be
+:: parsed by NVCC from the bundled CUDA 12.8, breaking all .cu compilation. MSBuild's
+:: VCToolsVersion controls the cl.exe that NVCC uses for host compilation, so it must
+:: be pinned here (repo.toml repo_build.msbuild.msvc_version=v143 only selects the
+:: PlatformToolset targets, not the actual tools version).
+set "VCToolsVersion=14.44.35207"
+
 call "%~dp0repo" build %*
