@@ -248,7 +248,10 @@ msvc_version = "v143"
 "token:in_ci==false".version_check_vs_version = "18"
 "token:in_ci==false".version_check_msvc_version = "v143"
 "token:in_ci==false".version_check_msbuild_version = "18"
-"token:in_ci==false".version_check_winsdk_version = "10.0.26100.0"
+# SDK is on G: drive; find_local_winsdk_version() hardcodes a C:\Program Files (x86)
+# search and can't see it, so leave the winsdk version-check empty (the SDK is already
+# linked explicitly via winsdk_path below and resolved by MSBuild via registry KitsRoot10).
+"token:in_ci==false".version_check_winsdk_version = ""
 
 # Filter specifically to "Enterprise", "Professional", or "Community" editions of Visual Studio
 # vs_edition = "Community"
@@ -264,6 +267,13 @@ msvc_version = "v143"
 
 # Windows SDK path; This will prevent needing to dynamically locate an installation by guesswork.
 # winsdk_path = "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.17763.0"
+
+# Windows SDK installed on G: drive (non-standard path). repo_build only auto-searches
+# C:\Program Files (x86)\Windows Kits, so point it explicitly here. The path must include
+# the version in its trailing name (mirrors the default bin\<version> layout). The registry
+# KitsRoot10 already points to G:\Windows Kits\10, so MSBuild itself resolves Include/Lib.
+"token:in_ci==false".winsdk_version = "10.0.26100.0"
+"token:in_ci==false".winsdk_path = "G:\\Windows Kits\\10\\bin\\10.0.26100.0"
 
 
 
